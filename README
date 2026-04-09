@@ -1,1 +1,30 @@
+A* Pathfinder: Data Structures Visualizer:
+A sleek, interactive web-based tool designed to visualize the A*  Search Algorithm and its variants on a dynamic graph. Built with vanilla 
+JavaScript and HTML5 Canvas, this project allows users to build custom topologies and watch how the algorithm explores nodes in real-time.
+🚀 Features
+ Interactive Graph Construction:
+ Add Nodes: Click anywhere on the canvas to create new vertices.
+ Add Edges: Connect nodes with weighted, directed edges.Weights are automatically calculated based on Euclidean distance.
+ Drag & Drop: Reposition nodes dynamically to see how the heuristic values change.
+ Delete Mode: Easily remove nodes or edges from your layout.
+ Algorithm Variants:
+ A* (Euclidean): Uses straight-line distance.
+ A* (Manhattan): Uses L1 distance (ideal for grid-like layouts).
+ Dijkstra's Algorithm: Runs the search with $h(n) = 0$, focusing purely on path cost.
+ Real-time Metrics: Track the "Open Set," "Closed Set," total nodes explored, and the final path cost (f = g + h).
+ Visualization Controls: Adjustable animation speed from "Slow" to "Fast."
+
+🛠️ Technical Overview
+The visualizer is built using a modern "Dark Mode" aesthetic powered by the Syne and Space Mono typefaces.
+The A* Equation
+The algorithm selects the next node to explore based on the formula:
+  f(n) = g(n) + h(n)
+ g(n): The actual cost from the start node to the current node n.
+ h(n): The heuristic (estimated) cost from $n$ to the goal.
+ f(n): The total estimated cost of the cheapest solution through n.
+
+Project Structure
+ index.html: The structural layout including the sidebar controls and the main canvas.
+ style.css: Custom CSS Variables for easy skinning and a responsive grid layout.
+ script.js: The core logic, including the A* implementation, canvas rendering engine, and event handlers.
 
