@@ -1,0 +1,157 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <link
+        href="https://fonts.googleapis.com/css2?family=Space+Mono:wght@400;700&family=Syne:wght@400;600;800&display=swap"
+        rel="stylesheet">
+    <link rel="stylesheet" href="style.css" />
+  
+</head>
+
+<body>
+    <header>
+        <h1>A* Pathfinder</h1>
+        <span>Data Structures Visualizer</span>
+    </header>
+
+    <div class="main">
+        <!-- LEFT SIDEBAR -->
+        <div class="sidebar">
+            <div>
+                <div class="section-label">Start Node</div>
+                <select id="startSelect"></select>
+            </div>
+            <div>
+                <div class="section-label">End Node</div>
+                <select id="endSelect"></select>
+            </div>
+            <hr class="divider">
+            <div>
+                <div class="section-label">Edit Mode</div>
+                <div class="mode-row">
+                    <button class="mode-btn active" id="modeMove" >Move</button>
+                    <button class="mode-btn" id="modeAdd" >Add Node</button>
+                    <button class="mode-btn" id="modeEdge" >Add Edge</button>
+                    <button class="mode-btn" id="modeDel" >Delete</button>
+                </div>
+            </div>
+            <hr class="divider">
+            <div>
+                <div class="section-label">Speed</div>
+                <div class="speed-row">
+                    <span>Slow</span>
+                    <input type="range" id="speedSlider" min="50" max="800" value="350">
+                    <span>Fast</span>
+                </div>
+            </div>
+            <hr class="divider">
+            <button class="btn btn-primary" id="runBtn" >▶ Find Shortest Path</button>
+            <button class="btn btn-danger" >↺ Reset Visualization</button>
+            <button class="btn btn-secondary" >✕ Clear Graph</button>
+            <button class="btn btn-secondary" >⊕ Load Example</button>
+            <hr class="divider">
+            <div>
+                <div class="section-label">Path Details</div>
+                <div id="pathDetails" class="path-list" style="min-height:60px">
+                    <span style="color:var(--muted);font-size:11px">Run algorithm to see path...</span>
+                </div>
+            </div>
+        </div>
+
+        <!-- CANVAS -->
+        <div class="canvas-wrap">
+            <canvas id="graphCanvas"></canvas>
+        </div>
+
+        <!-- RIGHT SIDEBAR -->
+        <div class="sidebar-right">
+            <div>
+                <div class="section-label">Algorithm State</div>
+                <div class="info-card">
+                    <div class="kv"><span>Open Set</span> <span class="tag tag-open" id="openSetDisplay">—</span></div>
+                    <div class="kv"><span>Closed Set</span> <span class="tag tag-closed" id="closedSetDisplay">—</span>
+                    </div>
+                    <div class="kv"><span>Priority</span> <span class="tag tag-path" id="priorityDisplay">—</span></div>
+                    <div class="kv" style="margin-top:6px"><span>Status</span> <span id="statusDisplay"
+                            style="font-size:11px;color:var(--muted)">Idle</span></div>
+                </div>
+            </div>
+            <div>
+                <div class="section-label">Statistics</div>
+                <div style="display:grid;grid-template-columns:1fr 1fr;gap:8px">
+                    <div class="stat-box">
+                        <div class="stat-title">Nodes Explored</div>
+                        <div class="stat-val" id="statExplored">0</div>
+                    </div>
+                    <div class="stat-box">
+                        <div class="stat-title">Path Length</div>
+                        <div class="stat-val" id="statPathLen">—</div>
+                    </div>
+                    <div class="stat-box">
+                        <div class="stat-title">Total Cost</div>
+                        <div class="stat-val" id="statCost">—</div>
+                    </div>
+                    <div class="stat-box">
+                        <div class="stat-title">Nodes in Graph</div>
+                        <div class="stat-val" id="statNodes">0</div>
+                    </div>
+                </div>
+            </div>
+            <hr class="divider">
+            <div>
+                <div class="section-label">Legend</div>
+                <div class="legend">
+                    <div class="legend-item">
+                        <div class="legend-dot" style="background:#00ff88;border-color:#00ff88"></div>Start node
+                    </div>
+                    <div class="legend-item">
+                        <div class="legend-dot" style="background:#ff4466;border-color:#ff4466"></div>End node
+                    </div>
+                    <div class="legend-item">
+                        <div class="legend-dot" style="background:#1a3a2a;border-color:#00ff88"></div>Open set
+                    </div>
+                    <div class="legend-item">
+                        <div class="legend-dot" style="background:#1a2a3a;border-color:#4488ff"></div>Closed set
+                    </div>
+                    <div class="legend-item">
+                        <div class="legend-dot" style="background:#ffd700;border-color:#ffd700"></div>Optimal path
+                    </div>
+                    <div class="legend-item">
+                        <div class="legend-dot" style="background:#21262d;border-color:#30363d"></div>Unvisited
+                    </div>
+                </div>
+            </div>
+            <hr class="divider">
+            <div>
+                <div class="section-label">Algorithm Variant</div>
+                <select id="heuristicSelect">
+                    <option value="euclidean">Euclidean Distance (h)</option>
+                    <option value="manhattan">Manhattan Distance (h)</option>
+                    <option value="dijkstra">Dijkstra (h=0)</option>
+                </select>
+                <div style="font-size:10px;color:var(--muted);line-height:1.6">
+                    f(n) = g(n) + h(n)<br>
+                    g = cost from start<br>
+                    h = heuristic estimate
+                </div>
+            </div>
+            <hr class="divider">
+            <div>
+                <div class="section-label">Instructions</div>
+                <div style="font-size:10px;color:var(--muted);line-height:1.9">
+                    • <b style="color:var(--text)">Move:</b> drag nodes<br>
+                    • <b style="color:var(--text)">Add Node:</b> click canvas<br>
+                    • <b style="color:var(--text)">Add Edge:</b> click two nodes<br>
+                    • <b style="color:var(--text)">Delete:</b> click node/edge
+                </div>
+            </div>
+        </div>
+    </div>
+
+ <!-- <script src="script.js"></script> -->
+</body>
+
+</html>
